@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="script/program-1.js"></script>
+</head>
+<body>
+  <h2>Finding N th element of an given array </h2><br><br>
+  <h3>Enter element of array seprated by space</h3>
+  <form>
+    Elements : &nbsp <input type="text" id="arr" name="arr" required><br>
+    value of N : <input type="text" id="n" name="n" required><br>
+    <button type="button" onclick="myfunction()">check</button>
+  </form>
+  <p id="para"></p>
+<body>
+</html>
