@@ -1,0 +1,55 @@
+<body>
+  {{> master}}
+</body>
+<template name="master">
+  {{> Template.dynamic template=top}}
+  {{> Template.dynamic template=main}}
+</template>
+
+<template name="header">
+  <header>
+    <h1>Completed Tasks ({{incompleteCount}})</h1>
+    <label class="hide-completed">
+      <input type="checkbox" />
+      Hide Completed Tasks
+    </label>
+    {{> loginButtons}}
+    {{#if currentUser}}
+      <form class="new-task">
+        <input type="text" name="text" placeholder="Type to add new tasks" />
+      </form>
+    {{/if}}
+  </header>
+</template>
+
+<template name="Subheader">
+  <header>
+    <h1>Completed Subtasks ({{incompleteCount}})</h1>
+    <label class="hide-completed">
+      <input type="checkbox" />
+      Hide Completed Tasks
+    </label>
+    {{> loginButtons}}
+    {{#if currentUser}}
+      <form class="new-sub-task">
+        <input type="text" name="text" placeholder="Type to add new sub-tasks" />
+      </form>
+    {{/if}}
+  </header>
+</template>
+
+<template name="list">
+  <ul>
+    {{#each tasks}}
+      {{> task}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="sublist">
+  <ul>
+    {{#each subtasks}}
+      {{> subtask}}
+    {{/each}}
+  </ul>
+</template>
