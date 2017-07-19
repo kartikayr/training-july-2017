@@ -8,8 +8,8 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 10%;
+  right: 10%;
 
   padding: 0;
   margin: 0;
@@ -30,18 +30,36 @@ header {
   padding: 20px 15px 15px 15px;
   position: relative;
 }
+
 .header {
   background: #d2edf4;
   background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
   padding: 20px 15px 15px 15px;
   position: relative;
 }
+
+a.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+a:link {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    text-decoration: underline;
+}
 #login-buttons {
 display: inline-block;
-border-radius: 4px;
+border-radius: 5px;
 background-color: #f4511e;
 border: black;
-color: #FFFFFF;
+color: black;
 text-align: center;
 font-size: 16px;
 padding: 15px;

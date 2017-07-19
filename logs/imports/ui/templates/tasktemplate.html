@@ -36,6 +36,6 @@
         {{/if}}
       </button>
     {{/if}}
-    <a href="/tasks/{{_id}}" id={{_id}}><span class="text"><strong>{{username}}</strong> - {{text}}</span></a>
+    <a href="/tasks/{{_id}}" id={{_id}} class="{{#if checked}}disabled{{/if}}"><span class="text">{{text}} (By <strong>{{username}}</strong>)</span></a>
   </li>
 </template>
