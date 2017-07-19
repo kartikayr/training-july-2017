@@ -6,21 +6,37 @@
     {{#if currentUser}}
       <form class="new-task">
         <input type="text" name="text" placeholder="Type to add new tasks" />
+        <input type="date" name="date"/>
       </form>
     {{/if}}
   </header>
 </template>
 
-<template name="list">
+<template name="todaylist">
   <ul>
+    Today
     {{#each tasks}}
       {{> task}}
     {{/each}}
   </ul>
-  <label class="hide-completed">
-    <input type="checkbox" />
-    Hide Completed Tasks
-  </label>
+</template>
+
+<template name="weeklist">
+  <ul>
+    This Week
+    {{#each weeks}}
+      {{> task}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="laterlist">
+  <ul>
+    Later
+    {{#each laters}}
+      {{> task}}
+    {{/each}}
+  </ul>
 </template>
 
 <template name="task">

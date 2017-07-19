@@ -7,28 +7,40 @@ import { HTTP } from 'meteor/http'
 import './tasktemplate.html';
 import '../body.html';
 
-Template.list.onCreated(function listOnCreated() {
+Template.todaylist.onCreated(function listOnCreated() {
   console.log("On created List")
   this.state = new ReactiveDict();
   Meteor.subscribe('tasks');
+});
+Template.weeklist.onCreated(function listOnCreated() {
+  console.log("On created List")
+  this.state = new ReactiveDict();
+  Meteor.subscribe('weeks');
+});
+Template.laterlist.onCreated(function listOnCreated() {
+  console.log("On created List")
+  this.state = new ReactiveDict();
+  Meteor.subscribe('laters');
 });
 // Template.header.onCreated(function bodyOnCreated() {
 //   this.state = new ReactiveDict();
 // });
 
-Template.list.helpers({
+Template.todaylist.helpers({
   tasks() {
-    console.log("tasks")
-    const instance = Template.instance();
-    console.log(instance.state.get('hideCompleted'))
-    if (instance.state.get('hideCompleted')) {
-      // If hide completed is checked, filter tasks
-      return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
-    }
     return Tasks.find({},{ sort: { createdAt: -1 }});
   },
-
 });
+Template.weeklist.helpers({
+  weeks() {
+    return Tasks.find({},{ sort: { createdAt: -1 }});
+  },
+})
+Template.laterlist.helpers({
+  laters() {
+    return Tasks.find({},{ sort: { createdAt: -1 }});
+  },
+})
 
 Template.task.helpers({
   isOwner() {
@@ -59,21 +71,14 @@ Template.header.events({
   'submit .new-task'(event) {
     // Prevent default browser form submit
     event.preventDefault();
-
     // Get value from form element
     const target = event.target;
     const text = target.text.value;
-
+    const date = target.date.value;
     // Insert a task into the collection
-    Meteor.call('tasks.insert', text);
+    Meteor.call('tasks.insert', text, date);
     // Clear form
     target.text.value = '';
   },
 
 });
-Template.list.events({
-  'change .hide-completed input'(event, instance) {
-    console.log("check")
-    instance.state.set('hideCompleted', event.target.checked);
-  },
-})

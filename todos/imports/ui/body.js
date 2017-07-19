@@ -4,13 +4,18 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import './task.js';
 import { Tasks } from '../api/tasks.js';
 import './body.html';
+import { SubTasks } from '../api/subtasks.js';
+import { Session } from 'meteor/session'
 
-Template.body.onCreated(function bodyOnCreated() {
+Template.main.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  // if(Session.get('/')){
+  //     return Meteor.subscribe('tasks');
+  // }
   Meteor.subscribe('tasks');
 });
 
-Template.body.helpers({
+Template.main.helpers({
   tasks() {
     const instance = Template.instance();
       if (instance.state.get('hideCompleted')) {
@@ -20,6 +25,8 @@ Template.body.helpers({
       // Otherwise, return all of the tasks
     return Tasks.find({});
   },
+});
+Template.body.helpers({
   incompleteCount() {
     return Tasks.find({ checked: { $ne: true } }).count();
   },

@@ -6,32 +6,42 @@ import { Tasks } from './collections.js'
 if (Meteor.isServer) {
   Meteor.publish('tasks', function tasksPublication() {
     console.log("Tasks Published");
-    return Tasks.find({
-      $or: [
-        { private: { $ne: true } },
-        { owner: this.userId },
-      ],
-    });
+    return Tasks.find({});
   });
   Meteor.publish('demotasks', function demotasksPublication() {
     console.log("Demo Tasks Published");
     return Tasks.find({});
   });
+  Meteor.publish('weeks', function tasksPublication() {
+    console.log("Tasks Published");
+    return Tasks.find({});
+  });
+  Meteor.publish('laters', function tasksPublication() {
+    console.log("Tasks Published");
+    return Tasks.find({});
+  });
 }
 
 Meteor.methods({
-  'tasks.insert'(text) {
+  'tasks.insert'(text, date) {
     check(text, String);
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
+//    let deadline = moment(date,"YYYY-MM-DD").fromNow();
+    let end = moment(date);
+    let start = moment(new Date())
+    let days = end.diff(start, 'days');
+    let deadline= moment.duration(days, 'days').asDays();
     Tasks.insert({
       text,
       createdAt: new Date(),
       owner: Meteor.userId(),
       username: Meteor.user().username,
       checked: false,
+      enddate: date,
+      time: deadline+1,
     });
   },
   'tasks.remove'(taskId) {
