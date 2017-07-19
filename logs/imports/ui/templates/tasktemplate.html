@@ -1,0 +1,41 @@
+<template name="header">
+  <header>
+    <h1>Completed Tasks ({{incompleteCount}})</h1>
+    {{> loginButtons}}
+    <button onclick="location.href = './demo'" class="demo-task">Demo Tasks</button>
+    {{#if currentUser}}
+      <form class="new-task">
+        <input type="text" name="text" placeholder="Type to add new tasks" />
+      </form>
+    {{/if}}
+  </header>
+</template>
+
+<template name="list">
+  <ul>
+    {{#each tasks}}
+      {{> task}}
+    {{/each}}
+  </ul>
+  <label class="hide-completed">
+    <input type="checkbox" />
+    Hide Completed Tasks
+  </label>
+</template>
+
+<template name="task">
+  <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
+    <button class="delete">&times;</button>
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+    {{#if isOwner}}
+      <button class="toggle-private">
+        {{#if private}}
+          Public
+        {{else}}
+          Private
+        {{/if}}
+      </button>
+    {{/if}}
+    <a href="/tasks/{{_id}}" id={{_id}}><span class="text"><strong>{{username}}</strong> - {{text}}</span></a>
+  </li>
+</template>
