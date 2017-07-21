@@ -14,7 +14,7 @@ FlowRouter.route('/tasks/:taskid', {
 FlowRouter.route('/', {
   action: function() {
     console.log("Root")
-    BlazeLayout.render("master", {top: "header", today: "todaylist", week: "weeklist", later: "laterlist"});
+    BlazeLayout.render("master", {top: "header", main: "list"});
   }
 });
 

@@ -24,4 +24,5 @@ accounts-password
 kadira:flow-router
 kadira:blaze-layout
 http
-momentjs:moment
+practicalmeteor:mocha
+practicalmeteor:sinon

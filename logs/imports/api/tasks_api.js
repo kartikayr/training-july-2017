@@ -6,42 +6,32 @@ import { Tasks } from './collections.js'
 if (Meteor.isServer) {
   Meteor.publish('tasks', function tasksPublication() {
     console.log("Tasks Published");
-    return Tasks.find({});
+    return Tasks.find({
+      $or: [
+        { private: { $ne: true } },
+        { owner: this.userId },
+      ],
+    });
   });
   Meteor.publish('demotasks', function demotasksPublication() {
     console.log("Demo Tasks Published");
     return Tasks.find({});
   });
-  Meteor.publish('weeks', function tasksPublication() {
-    console.log("Tasks Published");
-    return Tasks.find({});
-  });
-  Meteor.publish('laters', function tasksPublication() {
-    console.log("Tasks Published");
-    return Tasks.find({});
-  });
 }
 
 Meteor.methods({
-  'tasks.insert'(text, date) {
+  'tasks.insert'(text) {
     check(text, String);
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
-//    let deadline = moment(date,"YYYY-MM-DD").fromNow();
-    let end = moment(date);
-    let start = moment(new Date())
-    let days = end.diff(start, 'days');
-    let deadline= moment.duration(days, 'days').asDays();
     Tasks.insert({
       text,
       createdAt: new Date(),
       owner: Meteor.userId(),
       username: Meteor.user().username,
       checked: false,
-      enddate: date,
-      time: deadline+1,
     });
   },
   'tasks.remove'(taskId) {
@@ -68,7 +58,7 @@ Meteor.methods({
     check(setToPrivate, Boolean);
     const task = Tasks.findOne(taskId);
     // Make sure only the task owner can make a task private
-    if (task.owner !== Meteor.userId()) {
+    if (task.owner && task.private !== Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
     Tasks.update(taskId, { $set: { private: setToPrivate } });

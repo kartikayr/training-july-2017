@@ -57,7 +57,7 @@ Meteor.methods({
     const task = SubTasks.findOne(taskId);
 
     // Make sure only the task owner can make a task private
-    if (task.owner !== Meteor.userId()) {
+    if (task.owner && task.private !== Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
     SubTasks.update(taskId, { $set: { private: setToPrivate } });
