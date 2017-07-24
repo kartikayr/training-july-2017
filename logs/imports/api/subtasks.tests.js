@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
-//import { sinon } from 'meteor/practicalmeteor:sinon';
-import { userId, userName } from './tasks.tests.js'
+
 import { SubTasks } from './collections.js';
 import './subtasks_api.js';
 
@@ -21,7 +19,7 @@ if (Meteor.isServer) {
           // Set up a fake method invocation that looks like what the method expects
           // const invocation = { userId };
           // Run the method with `this` set to the fake invocation
-          insertsubTask.apply({}, ["test-task"]);
+          insertsubTask.apply({}, ["test-task",taskId]);
           assert.equal(SubTasks.find().count(),1);
         })
       });
@@ -32,8 +30,15 @@ if (Meteor.isServer) {
           taskId = SubTasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+          });
+          SubTasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
@@ -42,7 +47,7 @@ if (Meteor.isServer) {
         const deletesubTask = Meteor.server.method_handlers['subtasks.remove'];
         // const invocation = { userId };
         deletesubTask.apply({}, [taskId]);
-        assert.equal(SubTasks.find().count(), 0);
+        assert.equal(SubTasks.find({_id: taskId}).count(), 0);
         });
       });
 
@@ -52,8 +57,15 @@ if (Meteor.isServer) {
           taskId = SubTasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+          });
+          SubTasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
@@ -61,8 +73,8 @@ if (Meteor.isServer) {
        it('can checked sub-task', () => {
           const checkedsubTask = Meteor.server.method_handlers['subtasks.setChecked'];
           // const invocation = { userId };
-          checkedsubTask.apply({}, [taskId, !this.cheked]);
-          assert.equal(SubTasks.find({checked : true }).count(), 1);
+          checkedsubTask.apply({}, [taskId, true]);
+          assert.equal(SubTasks.find({_id: taskId, checked : true }).count(), 1);
         });
       });
 
@@ -72,8 +84,16 @@ if (Meteor.isServer) {
           taskId = SubTasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+            private: false,
+          });
+          SubTasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
@@ -81,8 +101,8 @@ if (Meteor.isServer) {
         it('can setPrivate sub-task', () => {
           const setPrivateSubTask = Meteor.server.method_handlers['subtasks.setPrivate'];
           // const invocation = { userId };
-          setPrivateSubTask.apply({}, [taskId, !this.private]);
-          assert.equal(SubTasks.find({private : true }).count(), 1);
+          setPrivateSubTask.apply({}, [taskId, true]);
+          assert.equal(SubTasks.find({_id: taskId, private : true }).count(), 1);
         });
       });
    });

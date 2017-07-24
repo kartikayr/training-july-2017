@@ -74,5 +74,4 @@ Template.Subheader.events({
     // Clear form
     target.text.value = '';
   },
-
 });

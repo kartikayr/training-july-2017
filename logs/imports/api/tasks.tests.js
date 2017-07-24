@@ -1,28 +1,29 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { sinon } from 'meteor/practicalmeteor:sinon';
+
+import { SubTasks } from './collections.js';
 import { Tasks } from './collections.js';
 import './tasks_api.js';
+import './subtasks_api.js';
 
 if (Meteor.isServer) {
   describe('Tasks', () => {
     describe('methods', () => {
-      const userId = sinon.stub(Meteor,"userId",()=>{
-        let id = "XJpbymbnyb9yFerHh";
-        return id;
+      sinon.stub(Meteor,"userId",()=>{
+        return "XJpbymbnyb9yFerHh";
       });
-      const userName = sinon.stub(Meteor,"user",()=>{
-        let name = 'tmeasday';
-        return name;
+      sinon.stub(Meteor,"user",()=>{
+        return {username : 'tmeasday'};
       });
-      let taskId;
+      // let limit = sinon.stub(Meteor );
 
-      describe('insert', () => {
+      let taskId,subtaskId;
+
+      describe('Insert', () => {
         beforeEach(() => {
           Tasks.remove({});
         });
-
         it('can insert task', () => {
           const insertTask = Meteor.server.method_handlers['tasks.insert'];
           // Set up a fake method invocation that looks like what the method expects
@@ -33,34 +34,47 @@ if (Meteor.isServer) {
         })
       });
 
-      describe('delete', () => {
+      describe('Delete', () => {
         beforeEach(() => {
           Tasks.remove({});
           taskId = Tasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+          });
+          Tasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
-
         it('can delete task', () => {
         const deleteTask = Meteor.server.method_handlers['tasks.remove'];
         // const invocation = { userId };
         deleteTask.apply({}, [taskId]);
-        assert.equal(Tasks.find().count(), 0);
+        assert.equal(Tasks.find({_id:taskId}).count(), 0);
         });
       });
 
-      describe('checked',() =>{
+      describe('Checked',() =>{
         beforeEach(() => {
           Tasks.remove({});
           taskId = Tasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+          });
+          Tasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
@@ -68,19 +82,27 @@ if (Meteor.isServer) {
        it('can checked task', () => {
           const checkedTask = Meteor.server.method_handlers['tasks.setChecked'];
           // const invocation = { userId };
-          checkedTask.apply({}, [taskId, !this.cheked]);
-          assert.equal(Tasks.find({checked : true }).count(), 1);
+          checkedTask.apply({}, [taskId, true]);
+          assert.equal(Tasks.find({_id: taskId, checked : true}).count(), 1);
         });
       });
 
-      describe('private',() => {
+      describe('Private',() => {
         beforeEach(() => {
           Tasks.remove({});
           taskId = Tasks.insert({
             text: 'test task',
             createdAt: new Date(),
-            owner: userId,
-            username: userName,
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+            private: false,
+          });
+          Tasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
             checked: false,
           });
         });
@@ -88,9 +110,54 @@ if (Meteor.isServer) {
         it('can setPrivate owned task', () => {
           const setPrivateTask = Meteor.server.method_handlers['tasks.setPrivate'];
           // const invocation = { userId };
-          setPrivateTask.apply({}, [taskId, !this.private]);
-          assert.equal(Tasks.find({private : true }).count(), 1);
+          setPrivateTask.apply({}, [taskId, true]);
+          assert.equal(Tasks.find({_id: taskId, private : true }).count(), 1);
         });
+      });
+
+      describe('Delete all subtasks of deleted task',() =>{
+        beforeEach(()=>{
+          Tasks.remove({});
+          SubTasks.remove({});
+          taskId = Tasks.insert({
+            text: 'test task',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+            private: false,
+          });
+          Tasks.insert({
+            text: 'test task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+          });
+          SubTasks.insert({
+            text: 'test sub-task',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+            task_id: taskId,
+          });
+          SubTasks.insert({
+            text: 'test sub-task-2',
+            createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
+            checked: false,
+            task_id: taskId,
+          });
+        })
+        it('can delete subtasks of deleted tasks',() =>{
+          const deleteTask = Meteor.server.method_handlers['tasks.remove'];
+          // const invocation = { userId };
+          deleteTask.apply({}, [taskId]);
+          assert.equal(Tasks.find({_id: taskId}).count(), 0);
+          assert.equal(SubTasks.find({task_id: taskId}).count(),0);
+        })
       });
    });
   });
