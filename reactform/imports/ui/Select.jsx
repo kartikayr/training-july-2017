@@ -6,10 +6,10 @@ export default class Select extends Component{
       <div>
         <h1>You Are?</h1>
         <select value={this.props.value} onChange={this.props.onChange}>
-          <option value="employee">Employee</option>
-          <option value="student">Student</option>
-          <option value="worker">Worker</option>
-          <option value="outsider">None of above</option>
+          <option value="batsman">Batsman</option>
+          <option value="bowler">Bowler</option>
+          <option value="wicket_keeper">Wicket Keeper</option>
+          <option value="all_rounder">All Rounder</option>
         </select>
       </div>
     )

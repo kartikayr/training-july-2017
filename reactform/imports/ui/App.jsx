@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Users } from '../api/collections.js';
+import { Players } from '../api/collections.js';
 import { Route , Link} from 'react-router-dom'
 
 import Label from './Label.jsx'
@@ -11,14 +11,15 @@ import Radio from './Radio.jsx'
 import Select from './Select.jsx'
 import About from './About.jsx'
 
-import Task from './Task.jsx';
+import Player from './Player.jsx';
 
 export class Main extends Component{
     render(){
       return (
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/form">Form</Link></li>
+          <li><Link to="/add">Add Player</Link></li>
+          <li><Link to="/list">List Players</Link></li>
         </ul>
       )
     }
@@ -34,22 +35,20 @@ export class App extends Component {
       age: '',
       email: '',
       about: '',
-      value: 'outsider',
-      // b: '',
+      value: 'batsman',
+      typed:'',
     }
-    this.formData = this.formData.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleOption = this.handleOption.bind(this);
   }
-  handleSubmit(event){
+  handleSubmit = (event) => {
     event.preventDefault();
     let name = this.name.input.value;
     let number = this.number.input.value;
-    let age = this.age.input.value;
-    let email = this.email.input.value;
+    let dob = this.dob.input.value;
+    let runs = this.runs.input.value;
+    let wickets = this.wickets.input.value;
     let post = this.state.value;
     let about = this.about.input.value;
+    let email = this.email.input.value;
     let array=[this.gender.male,this.gender.female,this.gender.others];
     let gender='';
     array.forEach((item) =>{
@@ -58,61 +57,82 @@ export class App extends Component {
     });
     console.log(name);
     console.log(number);
-    console.log(age);
-    console.log(email);
+    console.log(dob);
     console.log(post);
     console.log(about);
     console.log(gender)
-    Users.insert({
+    Players.insert({
       name,
       createdAt: new Date(), // current time
-      age,
+      dob,
       number,
-      email,
+      runs,
+      wickets,
       post,
       gender,
       about,
     });
   }
-  handleChange(event) {
+  hChange = (e) =>{
+    console.log('handle change called')
+  }
+
+  handleChange = (event) => {
+    event.preventDefault();
     this.setState({value: event.target.value});
     console.log(event.target.value)
   }
-  handleOption(changeEvent) {
-    this.setState({value: changeEvent.target.value});
-    console.log(changeEvent.target.value)
-  }
-  formData() {
+
+  formData = () => {
     return (
       <div>
-        <h1>User Details</h1><br/>
+        <h1>Player Details</h1><br/>
         <Label text="Name : " />
-        <Input
+        <input
+          onChange="sadasd"
           type="text"
           ref={ input => {this.name = input;} }
           placeholder="Enter your Name"
         /><br/>
-        <Label text="Age : " />
+        <Label text="Date of Birth : " />
         <Input
-          type="text"
-          ref={ input => {this.age = input;} }
+          type="date"
+          ref={ input => {this.dob = input;} }
           placeholder="Enter your Age"
         /><br/>
         <Label text="Number : " />
         <Input
-          type="text"
+          type="number"
           ref={ input => {this.number = input;} }
           placeholder="Enter your Number"
         /><br/>
         <Label text="Email : " />
         <Input
-          type="text"
+          type="email"
           ref={ input => {this.email = input;} }
           placeholder="Enter your Email"
         /><br/>
+        <Label text="Runs : " />
+        <Input
+          type="number"
+          ref={ input => {this.runs = input;} }
+          placeholder="Enter here"
+        /><br/>
+        <Label text="Wickets : " />
+        <Input
+          type="number"
+          ref={ input => {this.wickets = input;} }
+          placeholder="Enter here"
+        /><br/>
+        <Label text="Upload Pic : " />
+        <Input
+          type="file"
+          ref={ input => {this.pic = input;} }
+          placeholder="Enter here"
+        /><br/>
         <Radio ref={ input => {this.gender = input; }}/><br/>
         <Select onChange={this.handleChange}/><br/>
-        <About ref={ input => {this.about = input;} }/><br/>
+        <About label="About Player :" ref={ input => {this.about = input;} }/><br/>
         <Submit onClick={this.handleSubmit}/>
       </div>
     );
@@ -138,13 +158,3 @@ export class App extends Component {
       );
   }
 }
-
-App.PropTypes = {
-  tasks: PropTypes.array.isRequired,
-};
-
-export default createContainer(() => {
-  return {
-    tasks: Users.find({}).fetch(),
-  };
-}, App);
