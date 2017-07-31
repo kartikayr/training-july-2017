@@ -16,7 +16,62 @@ body {
 
   font-size: 14px;
 }
+table {
+    font-family: arial, sans-serif;
+    color: black;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+}
 
+th {
+    border: 1px solid BLACK;
+    text-align: left;
+    padding: 8px;
+}
+td {
+    border: 1px solid BLACK;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    color:white;
+    background-color: grey;
+}
+Input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+p{
+  color:Green;
+
+}
+button {
+    width: 100%;
+    background-color: green;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: black;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -48,12 +103,24 @@ form {
   margin-bottom: -10px;
   position: relative;
 }
-
-.new-task input {
+/*input[type="radio"] {
+  margin-top: -1px;
+  vertical-align: middle;
+}*/
+.new-task input{
   /*box-sizing: border-box;*/
   padding: 10px 0;
   background: transparent;
-  width:70%;
+  width:80%;
+  border:none;
+  padding-right: 80px;
+  font-size: 1em;
+}
+.new-task label{
+  /*box-sizing: border-box;*/
+  padding: 10px 0;
+  background: transparent;
+  width:80%;
   border:none;
   padding-right: 80px;
   font-size: 1em;

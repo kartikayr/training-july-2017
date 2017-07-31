@@ -47,6 +47,7 @@ export class App extends Component {
     let runs = this.runs.input.value;
     let wickets = this.wickets.input.value;
     let post = this.state.value;
+    let address = this.add.input.value;
     let about = this.about.input.value;
     let email = this.email.input.value;
     let array=[this.gender.male,this.gender.female,this.gender.others];
@@ -55,12 +56,6 @@ export class App extends Component {
         if(item.checked)
           gender=item.value;
     });
-    console.log(name);
-    console.log(number);
-    console.log(dob);
-    console.log(post);
-    console.log(about);
-    console.log(gender)
     Players.insert({
       name,
       createdAt: new Date(), // current time
@@ -68,13 +63,12 @@ export class App extends Component {
       number,
       runs,
       wickets,
+      email,
       post,
       gender,
       about,
+      address,
     });
-  }
-  hChange = (e) =>{
-    console.log('handle change called')
   }
 
   handleChange = (event) => {
@@ -88,51 +82,56 @@ export class App extends Component {
       <div>
         <h1>Player Details</h1><br/>
         <Label text="Name : " />
-        <input
-          onChange="sadasd"
-          type="text"
+        <Input
+          name="name"
           ref={ input => {this.name = input;} }
           placeholder="Enter your Name"
-        /><br/>
+        />
         <Label text="Date of Birth : " />
         <Input
           type="date"
           ref={ input => {this.dob = input;} }
           placeholder="Enter your Age"
-        /><br/>
+        />
         <Label text="Number : " />
         <Input
-          type="number"
+          name="mobile"
           ref={ input => {this.number = input;} }
           placeholder="Enter your Number"
         /><br/>
         <Label text="Email : " />
         <Input
-          type="email"
+          name="email"
           ref={ input => {this.email = input;} }
           placeholder="Enter your Email"
         /><br/>
+        <Label text="Address : " />
+        <Input
+          name="alphanum"
+          ref={ input => {this.add = input;} }
+          placeholder="Enter your address"
+        /><br/>
         <Label text="Runs : " />
         <Input
-          type="number"
+          name="numb"
           ref={ input => {this.runs = input;} }
           placeholder="Enter here"
-        /><br/>
+        />
         <Label text="Wickets : " />
         <Input
-          type="number"
+          name="numb"
           ref={ input => {this.wickets = input;} }
           placeholder="Enter here"
-        /><br/>
+        />
         <Label text="Upload Pic : " />
         <Input
           type="file"
           ref={ input => {this.pic = input;} }
           placeholder="Enter here"
-        /><br/>
-        <Radio ref={ input => {this.gender = input; }}/><br/>
-        <Select onChange={this.handleChange}/><br/>
-        <About label="About Player :" ref={ input => {this.about = input;} }/><br/>
+        />
+        <Radio ref={ input => {this.gender = input; }}/>
+        <Select onChange={this.handleChange}/>
+        <About label="About Player :" ref={ input => {this.about = input;} }/>
         <Submit onClick={this.handleSubmit}/>
       </div>
     );

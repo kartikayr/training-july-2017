@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // Task component - represents a single todo item
 export default class Player extends Component {
-  rows(){
-    
-  }
   render() {
     return (
-      <ul>
-        <h2>Information of {this.props.player.name}</h2>
-        <li>DOB : {this.props.player.dob}<br></br></li>
-        <li>Number : {this.props.player.number}<br></br></li>
-        <li>Runs : {this.props.player.runs}</li>
-        <li>Wickets : {this.props.player.wickets}</li>
-        <li>About player : {this.props.player.about}</li>
-        <li>Role : {this.props.player.post}</li>
-      </ul>
+      <tr>
+        <td>{this.props.player.name}</td>
+        <td>{this.props.player.dob}</td>
+        <td>{this.props.player.number}</td>
+        <td>{this.props.player.gender}</td>
+        <td>{this.props.player.email}</td>
+        <td>{this.props.player.address}</td>
+        <td>{this.props.player.runs}</td>
+        <td>{this.props.player.wickets}</td>
+        <td>{this.props.player.post}</td>
+        <td>{this.props.player.about}</td>
+      </tr>
     );
   }
 }

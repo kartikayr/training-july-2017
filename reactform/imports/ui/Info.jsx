@@ -12,7 +12,21 @@ export class Info extends Component{
   }
   render(){
     return(
-      <div>{this.renderTasks()}</div>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>DOB</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Runs</th>
+          <th>Wickets</th>
+          <th>Role</th>
+          <th>About</th>
+        </tr>
+        {this.renderTasks()}
+      </table>
     )
   }
 }
