@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Route , Link} from 'react-router-dom';
 // Task component - represents a single todo item
 export default class Player extends Component {
+  renderOne(){
+    return this.props.field.map((item, key)=>{
+      if(item.key=="dob"){
+        let date = moment(this.props.player[item.key], 'YYYY-MM-DD').format("DD MMM YYYY")
+        console.log(date);
+        return  <td key={key}>{date}</td>
+      }
+      if(item.key=="name"){
+        return <td key={key}><Link to={`./players/${this.props.player._id}`}>{this.props.player[item.key]}</Link></td>
+      }
+      return <td key={key}>{this.props.player[item.key]}</td>
+    });
+  }
   render() {
     return (
       <tr>
-        <td>{this.props.player.name}</td>
-        <td>{this.props.player.dob}</td>
-        <td>{this.props.player.number}</td>
-        <td>{this.props.player.gender}</td>
-        <td>{this.props.player.email}</td>
-        <td>{this.props.player.address}</td>
-        <td>{this.props.player.runs}</td>
-        <td>{this.props.player.wickets}</td>
-        <td>{this.props.player.post}</td>
-        <td>{this.props.player.about}</td>
+        {this.renderOne()}
       </tr>
     );
   }

@@ -39,6 +39,7 @@ export default class Input extends Component{
     return false;
   }
   isEmail = (evt) => {
+    let valid, message;
     let re = new RegExp("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
     let string = String(evt.target.value);
     if(re.test(string)){
@@ -77,9 +78,10 @@ export default class Input extends Component{
 
   }
   render() {
+    const { type, name } = this.props;
     return (
         <div>
-          <input type={this.props.type} name={this.props.name} onChange = {this.onChange} ref = { input => {this.input = input; }} placeholder={this.props.placeholder} />
+          <input type={type} name={name} onChange = {this.onChange} ref = { input => {this.input = input; }} placeholder={this.props.placeholder} />
           <br/><span>{this.state.message}</span>
         </div>
     )

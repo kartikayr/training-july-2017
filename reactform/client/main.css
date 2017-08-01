@@ -16,6 +16,10 @@ body {
 
   font-size: 14px;
 }
+input[type=text], .txtarea{
+margin-bottom: 10px;
+
+ }
 table {
     font-family: arial, sans-serif;
     color: black;
@@ -26,19 +30,23 @@ table {
 
 th {
     border: 1px solid BLACK;
+    color: black;
     text-align: left;
     padding: 8px;
+    background-color: grey;
 }
 td {
     border: 1px solid BLACK;
     text-align: left;
     padding: 8px;
+    color:black;
 }
 
 tr:nth-child(even) {
     color:white;
-    background-color: grey;
+    background-color: white;
 }
+
 Input[type=text], select {
     width: 100%;
     padding: 12px 20px;
