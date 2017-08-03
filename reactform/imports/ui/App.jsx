@@ -57,7 +57,7 @@ export class App extends Component {
           gender=item.value;
     });
     Meteor.call('players.insert',name,number,dob,runs,wickets,post,address,about,email,gender);
-    
+
     this.name.input.value='';
     this.number.input.value='';
     this.dob.input.value='';

@@ -14,25 +14,49 @@ import About from './About.jsx'
 import Checkbox from './Checkbox.jsx'
 
 export default class Edit extends Component{
-  constructor(props){
-    super(props);
-
-    // this.state = {
-    //   name: '',
-    //   number: '',
-    //   age: '',
-    //   email: '',
-    //   about: '',
-    //   value: 'batsman',
-    //   typed:'',
-    //   cname:'',
-    // }
+  componentWillMount = () => {
+    let id = this.props.match.params.id;
+    console.log(id);
+    Meteor.call('players.get',id, (error,data) => {
+      if(error){
+        console.log(error);
+      }
+      else{
+        console.log(data)
+        this.setState({
+          name: data.name,
+          number: data.number,
+          dob: data.dob,
+          email: data.email,
+          about: data.about,
+          value: data.post,
+          runs:data.runs,
+          wickets: data.wickets,
+          address:data.address,
+          gender: data.gender,
+          loading: false,
+        })
+      }
+    });
   }
-  // set = (id) => {
-  //   console.log(id)
-  //   var obj = Players.find({'_id' : id});
-  //   console.log(obj)
-  // }
+  constructor = (props) => {
+    super(props);
+    this.state = {
+      name: '',
+      number: '',
+      dob: '',
+      email: '',
+      about: '',
+      value: '',
+      runs:'',
+      wickets:'',
+      address:'',
+      about: '',
+      gender: '',
+      loading: true,
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     let name = this.name.input.value;
@@ -51,7 +75,13 @@ export default class Edit extends Component{
         if(item.checked)
           gender=item.value;
     });
-    Meteor.call('players.update',id,name,number,dob,runs,wickets,post,address,about,email,gender);
+    Meteor.call('players.update',id,name,number,dob,runs,wickets,post,address,about,email,gender,(error,data) => {
+      if(error)
+        console.log(error)
+      else {
+        window.alert("Response Successfully Updated");
+      }
+    });
 
     this.name.input.value='';
     this.number.input.value='';
@@ -70,9 +100,9 @@ export default class Edit extends Component{
     console.log(event.target.value);
   }
   formData = () => {
-    let _id = this.props.match.params.id;
-    let data = Players.find({_id}).fetch();
-    console.log(data)
+    // let _id = this.props.match.params.id;
+    // let data = Players.find({_id}).fetch();
+    // console.log(data)
     return (
       <div>
         <h1>Player Details</h1><br/>
@@ -80,42 +110,49 @@ export default class Edit extends Component{
         {/* <Checkbox ref={input => {this.cname = input;}} /> */}
         <Input
           name="name"
+          value={this.state.name}
           ref={ input => {this.name = input;} }
           placeholder="Enter your Name"
         />
         <Label text="Date of Birth : " />
         <Input
           type="date"
+          value={this.state.dob}
           ref={ input => {this.dob = input;} }
           placeholder="Enter your Age"
         />
         <Label text="Number : " />
         <Input
           name="mobile"
+          value={this.state.number}
           ref={ input => {this.number = input;} }
           placeholder="Enter your Number"
         /><br/>
         <Label text="Email : " />
         <Input
           name="email"
+          value={this.state.email}
           ref={ input => {this.email = input;} }
           placeholder="Enter your Email"
         /><br/>
         <Label text="Address : " />
         <Input
           name="alphanum"
+          value={this.state.address}
           ref={ input => {this.add = input;} }
           placeholder="Enter your address"
         /><br/>
         <Label text="Runs : " />
         <Input
           name="numb"
+          value={this.state.runs}
           ref={ input => {this.runs = input;} }
           placeholder="Enter here"
         />
         <Label text="Wickets : " />
         <Input
           name="numb"
+          value={this.state.wickets}
           ref={ input => {this.wickets = input;} }
           placeholder="Enter here"
         />
@@ -127,28 +164,31 @@ export default class Edit extends Component{
         />
         <Radio ref={ input => {this.gender = input; }}/>
         <Select onChange={this.handleChange}/>
-        <About label="About Player :" ref={ input => {this.about = input;} }/>
+        <About label="About Player :" value = {this.state.about} ref={ input => {this.about = input;} }/>
         <Submit onClick={this.handleSubmit}/>
       </div>
     );
   }
-  renderForm(){
+  renderForm = () => {
     return (
       <form className="new-task">
         {this.formData()}
       </form>
     );
   }
-  render(){
+  render = () => {
     // let id = this.props.match.params.id;
     // this.set(id);
+    if(this.state.loading){
+      return (<div> Loading </div>);
+    }
     return (
-      <div className="container">
-        <header>
-          <h1>Update details ==></h1>
-        </header>
-        {this.renderForm()}
-      </div>
-    );
+    <div className="container">
+      <header>
+        <h1>Update details ==></h1>
+      </header>
+      {this.renderForm()}
+    </div>
+  );
   }
 }

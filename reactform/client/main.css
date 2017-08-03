@@ -16,6 +16,18 @@ body {
 
   font-size: 14px;
 }
+.short{
+  width:10%;
+  margin-left:auto;
+  margin-top:-5%;
+  position:absolute;
+}
+.add{
+  width:15%;
+  margin-left:85%;
+  margin-top:-6.4%;
+  position:absolute;
+}
 input[type=text], .txtarea{
 margin-bottom: 10px;
 

@@ -9,7 +9,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'players.insert'(name,number,dob,runs,wickets,post,address,about,email,gender) {
+  'players.insert' : (name,number,dob,runs,wickets,post,address,about,email,gender) => {
     Players.insert({
       name,
       dob,
@@ -23,7 +23,7 @@ Meteor.methods({
       about,
     });
   },
-  'players.update'(id,name,number,dob,runs,wickets,post,address,about,email,gender) {
+  'players.update' : (id,name,number,dob,runs,wickets,post,address,about,email,gender) => {
     Players.update({_id:id},{
       $set :{
       name,
@@ -38,5 +38,9 @@ Meteor.methods({
       about,
       }
     });
+  },
+  'players.get' : (id) => {
+    let arr = Players.findOne({_id:id});
+    return arr;
   },
 });

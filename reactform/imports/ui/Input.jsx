@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default class Input extends Component{
-  constructor(){
+  constructor = () => {
     super()
     this.state = {
       valid: false,
@@ -75,13 +75,12 @@ export default class Input extends Component{
       default : console.log("Default")
                 break;
     }
-
   }
-  render() {
-    const { type, name } = this.props;
+  render = () => {
+    const { type, name ,value ,placeholder } = this.props;
     return (
         <div>
-          <input type={type} name={name} onChange = {this.onChange} ref = { input => {this.input = input; }} placeholder={this.props.placeholder} />
+          <input type={type} defaultValue = {value} name ={name} onChange = {this.onChange} ref = { input => {this.input = input; }} placeholder={placeholder} />
           <br/><span>{this.state.message}</span>
         </div>
     )
