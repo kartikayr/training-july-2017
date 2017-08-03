@@ -1,0 +1,11 @@
+<body>
+  {{> master}}
+</body>
+
+<template name="master">
+  {{> Template.dynamic template=top}}
+    <!-- {{> Template.dynamic template=main}} -->
+  {{> Template.dynamic template=today}}
+  {{> Template.dynamic template=week}}
+  {{> Template.dynamic template=later}}
+</template>
